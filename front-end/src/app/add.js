@@ -1,32 +1,19 @@
 import React, { useState } from "react";
-import { Table } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 const App = () => {
-  const [ids, setIds] = useState([
-    { name: "Ahmad", addres: "Bandung" },
-    { name: "Ahmad", addres: "Tangerang" },
-    { name: "Ahmad", addres: "Banten" }
-  ]);
-
   // const Todo = ({ todo }) => <div className="todo">{todo.text}</div>;
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Addres</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ids.map((item, index) => (
-          <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.addres}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <Form>
+      <label htmlFor="firstName">First Name</label>
+      <input id="firstName" name="firstName" type="text" />
+      <label htmlFor="lastName">Last Name</label>
+      <input id="lastName" name="lastName" type="text" />
+      <label htmlFor="email">Email Address</label>
+      <input id="email" name="email" type="email" />
+      <button type="submit">Submit</button>
+    </Form>
   );
 };
 
