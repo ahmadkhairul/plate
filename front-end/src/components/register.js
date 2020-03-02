@@ -1,25 +1,33 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-import { connect } from "react-redux";
-import { getSpecies } from "../_actions/species";
-
+import React, { Fragment, useState, useReducer } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { connect } from "react-redux";
+import { postRegister } from "../_actions/auth";
 
-import "font-awesome/css/font-awesome.min.css";
-
-
-const App = ({ species, getSpecies }) => {
+const App = ({ postRegister }) => {
   const [rgShow, setRgShow] = useState(false);
-  const { data, loading, error } = species;
+  const [value, setValue] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      username: "",
+      password: "",
+      email: "",
+      address: "",
+      phone: ""
+    }
+  );
 
-  useEffect(() => {
-    getSpecies();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setValue({ [name]: newValue });
+  };
 
-  if (error) return <h1>Error Found</h1>;
+  const { username, email, password, address, phone } = value;
 
-  if (loading) return <h1>Now loading</h1>;
+  function handleSubmit(event) {
+    event.preventDefault();
+    postRegister({ username, email, password, address, phone });
+  }
 
   return (
     <Fragment>
@@ -36,40 +44,80 @@ const App = ({ species, getSpecies }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Control type="email" placeholder="name@example.com" />
+              <Form.Control
+                type="text"
+                onChange={handleChange}
+                name="username"
+                value={username}
+                autoComplete="off"
+                placeholder="Your Name"
+              />
             </Form.Group>
             <Form.Group>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="email"
+                onChange={handleChange}
+                name="email"
+                value={email}
+                autoComplete="off"
+                placeholder="youremail@mail.com"
+              />
             </Form.Group>
             <Form.Group>
-              <Form.Control type="text" placeholder="Phone Number" />
+              <Form.Control
+                type="password"
+                onChange={handleChange}
+                name="password"
+                value={password}
+                autoComplete="off"
+                placeholder="Password"
+              />
             </Form.Group>
             <Form.Group>
-              <Form.Control as="textarea" rows="3" placeholder="Address" />
+              <Form.Control
+                type="number"
+                onChange={handleChange}
+                name="phone"
+                value={phone}
+                autoComplete="off"
+                placeholder="Phone Number"
+              />
             </Form.Group>
+            <Form.Group>
+              <Form.Control
+                as="textarea"
+                onChange={handleChange}
+                name="address"
+                value={address}
+                autoComplete="off"
+                placeholder="Address"
+                rows="3"
+              />
+            </Form.Group>
+            <Form.Group>
+              <input type="file" name="photo" />
+            </Form.Group>
+            <Button type="submit">Register</Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Link to="/">
-            <Button>Submit</Button>
-          </Link>
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </Fragment>
   );
 };
 
+//export default App;
 function mapStateToProps(state) {
   return {
-    species: state.species
+    register: state.register
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSpecies: () => dispatch(getSpecies())
+    postRegister: value => dispatch(postRegister(value))
   };
 }
 

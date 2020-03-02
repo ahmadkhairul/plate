@@ -1,18 +1,30 @@
-import React, { Fragment, useState } from "react";
-import { Redirect } from "react-router-dom";
-
-import { connect } from "react-redux";
-import { postLogin } from "../_actions/login";
-
+import React, { Fragment, useState, useReducer } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { connect } from "react-redux";
+import { postLogin } from "../_actions/auth";
 
-import "./components.css";
-
-const App = ({ login, postLogin }) => {
-  const [emailValue, emailSetValue] = useState("");
-  const [passwordValue, passwordSetValue] = useState("");
-  const { data, loading, error } = login;
+const App = ({ postLogin }) => {
   const [lgShow, setLgShow] = useState(false);
+  const [value, setValue] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      email: "",
+      password: ""
+    }
+  );
+
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setValue({ [name]: newValue });
+  };
+
+  const { email, password } = value;
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    postLogin({ email, password });
+  }
 
   return (
     <Fragment>
@@ -30,35 +42,25 @@ const App = ({ login, postLogin }) => {
         </Modal.Header>
 
         <Modal.Body>
-          {error === true ? <h6>Email or Password Wrong</h6> : <></>}
-          {loading === true ? <h6>Now Loading</h6> : <></>}
-          {data.token != null ? <>{<Redirect to="/"></Redirect>}</> : <></>}
-          <Form
-            onSubmit={event => {
-              postLogin({ emailValue, passwordValue });
-              event.preventDefault();
-            }}
-          >
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Control
                 type="email"
-                placeholder="Email"
-                value={emailValue}
-                onChange={event => {
-                  emailSetValue(event.target.value);
-                }}
-                required
+                onChange={handleChange}
+                name="email"
+                value={email}
+                autoComplete="off"
+                placeholder="youremail@mail.com"
               />
             </Form.Group>
             <Form.Group>
               <Form.Control
                 type="password"
+                onChange={handleChange}
+                name="password"
+                value={password}
+                autoComplete="off"
                 placeholder="Password"
-                value={passwordValue}
-                onChange={event => {
-                  passwordSetValue(event.target.value);
-                }}
-                required
               />
             </Form.Group>
             <Button type="submit">Login</Button>
@@ -70,17 +72,17 @@ const App = ({ login, postLogin }) => {
   );
 };
 
-// export default Login;
-const mapStateToProps = state => {
+//export default App;
+function mapStateToProps(state) {
   return {
     login: state.login
   };
-};
+}
 
-const mapDispatchToProps = dispatch => {
+function mapDispatchToProps(dispatch) {
   return {
-    postLogin: user => dispatch(postLogin(user))
+    postLogin: value => dispatch(postLogin(value))
   };
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

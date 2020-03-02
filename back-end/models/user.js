@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       phone: DataTypes.STRING,
       address: DataTypes.STRING,
+      photo: DataTypes.STRING,
       level: DataTypes.ENUM(["User", "Admin"])
     },
     {}

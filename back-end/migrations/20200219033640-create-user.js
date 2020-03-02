@@ -21,11 +21,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       phone: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       address: {
-        allowNull: false,
+        type: Sequelize.STRING
+      },
+      photo: {
         type: Sequelize.STRING
       },
       level: {

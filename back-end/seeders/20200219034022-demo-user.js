@@ -17,6 +17,7 @@ module.exports = {
             username: "admin breeder",
             phone: "081081234321",
             address: "Permata Bintaro Residence",
+            photo: "http://admin.jpg",
             level: "Admin",
             createdAt: new Date(),
             updatedAt: new Date()
@@ -27,6 +28,7 @@ module.exports = {
             username: "Juan Carlos",
             phone: "081081234321",
             address: "Permata Bintaro Residence",
+            photo: "http://user.jpg",
             level: "User",
             createdAt: new Date(),
             updatedAt: new Date()
@@ -37,6 +39,7 @@ module.exports = {
             username: "Mey Melisa",
             phone: "081081234321",
             address: "Permata Bintaro Residence",
+            photo: "http://user.jpg",
             level: "User",
             createdAt: new Date(),
             updatedAt: new Date()
