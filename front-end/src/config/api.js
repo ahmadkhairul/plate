@@ -10,6 +10,6 @@ export const setAuthToken = token => {
 };
 
 export const setToken = () => {
-  const send = localStorage.getItem("token");
-  setAuthToken(send);
+  const token = localStorage.getItem("token");
+  setAuthToken(token);
 };

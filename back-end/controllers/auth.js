@@ -57,3 +57,26 @@ exports.register = async (req, res) => {
     res.status(404).send({ status: false });
   }
 };
+
+exports.auth = async (req, res) => {
+  try {
+    const id = req.user;
+    const data = await User.findOne({
+      where: { id },
+      attributes: {
+        exclude: ["id", "password", "level", "createdAt", "updatedAt"]
+      }
+    });
+    if (data) {
+      res.status(200).send({ status: true, message: "succes", data });
+    } else {
+      res
+        .status(404)
+        .send({ status: false, message: "user not found", data: {} });
+    }
+  } catch (err) {
+    res
+      .status(404)
+      .send({ status: false, message: "Authorization not Allowed" });
+  }
+};

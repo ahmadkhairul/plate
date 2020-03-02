@@ -1,10 +1,12 @@
 import React, { Fragment, useState, useReducer } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { postRegister } from "../_actions/auth";
 
-const App = ({ postRegister }) => {
+const App = ({ register, postRegister }) => {
   const [rgShow, setRgShow] = useState(false);
+  const { data, loading, error } = register;
   const [value, setValue] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -44,6 +46,9 @@ const App = ({ postRegister }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {error === true ? <h6>Email Already Taken</h6> : <></>}
+          {loading === true ? <h6>Now Loading</h6> : <></>}
+          {data.token != null ? <>{<Redirect to="/profile" />}</> : <></>}
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Control
@@ -111,7 +116,7 @@ const App = ({ postRegister }) => {
 //export default App;
 function mapStateToProps(state) {
   return {
-    register: state.register
+    register: state.auth
   };
 }
 

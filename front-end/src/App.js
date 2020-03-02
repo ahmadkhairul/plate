@@ -1,6 +1,6 @@
 import React from "react";
 import Index from "./app/index";
-import Add from "./app/add";
+import Profile from "./app/profile";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
@@ -9,8 +9,8 @@ const App = () => {
     <Router>
       <div>
         <Switch>
-          <Route path="/add">
-            <Add />
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/">
             <Index />
